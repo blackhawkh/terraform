@@ -32,7 +32,7 @@ resource "google_compute_firewall" "allow-http" {
   target_tags   = ["public-http"]
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["80", "8080"]
   }
 }
 

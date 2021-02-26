@@ -74,6 +74,19 @@ server {
 
   location / {
     proxy_pass http://localhost:8080;
+    proxy_read_timeout    1000s;
+    proxy_connect_timeout 30s;
+    proxy_send_timeout    90s;
+    proxy_redirect        off;
+    proxy_http_version    1.1;
+    proxy_set_header      Host \$host;
+    proxy_set_header      X-Real-IP \$remote_addr;
+    proxy_set_header      X-Forwarded-For \$remote_addr;
+    proxy_set_header      Forwarded "";
+    proxy_set_header      Connection "";
+    proxy_set_header      X-Forwarded-Proto \$scheme;
+    proxy_set_header      Cache-Control no-cache;
+    proxy_pass_header      Set-Cookie;
   }
 }
 """ > /etc/nginx/conf.d/jenkins.conf
@@ -93,6 +106,20 @@ server {
 
   location / {
     proxy_pass http://localhost:5000;
+    proxy_read_timeout    1000s;
+    proxy_connect_timeout 30s;
+    proxy_send_timeout    90s;
+    proxy_redirect        off;
+    proxy_http_version    1.1;
+    proxy_set_header      X-Forwarded-HTTPS on;
+    proxy_set_header      Host \$host;
+    proxy_set_header      X-Real-IP \$remote_addr;
+    proxy_set_header      X-Forwarded-For \$remote_addr;
+    proxy_set_header      Forwarded "";
+    proxy_set_header      Connection "";
+    proxy_set_header      X-Forwarded-Proto \$scheme;
+    proxy_set_header      Cache-Control no-cache;
+    proxy_pass_header      Set-Cookie;
   }
 }
 """ > /etc/nginx/conf.d/docker.conf
