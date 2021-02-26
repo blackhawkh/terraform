@@ -135,6 +135,8 @@ echo '''
 # Need to configure SE Linux for prod
 setenforce 0
 
+usermod -aG docker jenkins
+
 systemctl restart nginx
 
 systemctl start docker
