@@ -14,7 +14,7 @@ resource "google_compute_instance" "jenkins" {
       type  = "pd-standard"
     }
   }
-  tags = ["public-https"]
+  tags = ["public-https", "public-http", "my-instance"]
   network_interface {
     network = var.network
     access_config {}
@@ -22,5 +22,38 @@ resource "google_compute_instance" "jenkins" {
 
   metadata = {
     startup-script = file("scripts/jenkins.sh")
+  }
+}
+
+resource "google_compute_firewall" "allow-http" {
+  name          = "allow-http"
+  network       = var.network
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["public-http"]
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+}
+
+resource "google_compute_firewall" "allow-https" {
+  name          = "allow-https"
+  network       = var.network
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["public-https"]
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+}
+
+resource "google_compute_firewall" "my-instance" {
+  name          = "my-instance"
+  network       = var.network
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["my-instance"]
+  allow {
+    protocol = "tcp"
+    ports    = ["9000"]
   }
 }

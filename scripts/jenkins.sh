@@ -105,6 +105,8 @@ echo '''
 }
 ''' > /etc/docker/daemon.json
 
+# Need to configure SE Linux for prod
+setenforce 0
 
 systemctl restart nginx
 
