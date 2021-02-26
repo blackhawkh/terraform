@@ -17,7 +17,7 @@ systemctl daemon-reload
 # generate ssl
 SSL_DIR=/etc/nginx/ssl
 mkdir -p ${SSL_DIR}
-openssl req -newkey rsa:2048 -nodes -keyout ${SSL_DIR}/key.pem -x509 -days 365 -out ${SSL_DIR}/cert.pem -subj "/C=C/ST=ST/L=L/O=O/OU=OU/CN=CN/emailAddress=emailAddress"
+openssl req -newkey rsa:2048 -nodes -keyout ${SSL_DIR}/key.pem -x509 -days 365 -out ${SSL_DIR}/cert.pem -subj "/C=XX/ST=ST/L=XX/O=XX/OU=OU/CN=CN/emailAddress=emailAddress"
 #openssl genrsa -out ${SSL_DIR}/key.pem 2048
 #openssl rsa -in ${SSL_DIR}/key.pem -pubout -out ${SSL_DIR}/cert.pem
 
