@@ -81,8 +81,7 @@ server {
 # need to add auth or migrate to the normal registry (Harbor, Google registry etc)
 echo """
 server {
-  listen *:443 default http2;
-  ssl on;
+  listen *:443 default http2 ssl;
 
   ssl_certificate           /etc/nginx/ssl/cert.pem;
   ssl_certificate_key       /etc/nginx/ssl/key.pem;
@@ -98,12 +97,24 @@ server {
 }
 """ > /etc/nginx/conf.d/docker.conf
 
-# need to move to systemd unit file
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
+mkdir /etc/docker
+
+echo '''
+{
+  "insecure-registries" : ["localhost:5000"]
+}
+''' > /etc/docker/daemon.json
+
 
 systemctl restart nginx
 
+systemctl start docker
+systemctl enable docker
+
 systemctl start jenkins
 systemctl enable jenkins
+
+# need to move to systemd unit file
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
 touch /bootstraped
